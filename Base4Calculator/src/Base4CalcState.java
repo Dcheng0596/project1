@@ -3,12 +3,14 @@ public class Base4CalcState {
 	private String totalValue; // value of current calculation
 	private String tempValue;  // number to be combined to totalValue
 	private String operation;    // if or what operation to be used
+	private int base;
 	
 	Base4CalcState()
 	{
-	    totalValue = "";
-	    tempValue = "";
-	    operation = "";
+	    totalValue = new String("");
+	    tempValue = new String("");
+	    operation = new String("");
+	    base = 10;
 	}
 	void setOperation(String op) { operation = op; }
 	
@@ -25,6 +27,10 @@ public class Base4CalcState {
 	String getTotalValue() { return totalValue; }
 	
 	void setTotalValue(String digit) { totalValue += digit; }
+	
+	void setBase(int radix) { base = radix; }
+	
+	int getBase() { return base; }
 	
 	// What other methods will you need?
 }
