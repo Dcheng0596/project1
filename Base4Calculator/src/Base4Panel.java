@@ -66,7 +66,7 @@ public class Base4Panel extends JPanel {
 		multiply.addActionListener(new OperationListener());
 		divide.addActionListener(new OperationListener());
 		clear.addActionListener(new ClearListener());
-		equal.addActionListener(new EnterListener());
+		equal.addActionListener(new EqualListener());
 		
 			
 		add(screen);
@@ -104,7 +104,17 @@ public class Base4Panel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            screen.setText(screen.getText()+((AbstractButton) e.getSource()).getText()); // prints to the screen the button text  
+            String buttonText = new String(((AbstractButton) e.getSource()).getText());  // gets button text
+            if(calc.getOperation() == "")       // appends buttonText to either total or temp depending if an operation has been pressed
+            {
+                calc.setTotalValue(buttonText);     // appends the digit to total
+                screen.setText(calc.getTotalValue()); // prints to the screen the button text  
+            }
+            else
+            {
+                calc.setTempValue(buttonText);      // appends the digit to temp
+                screen.setText(calc.getTempValue()); // prints to the screen the button text  
+            }              
         }
     }
     class OperationListener implements ActionListener
@@ -127,15 +137,18 @@ public class Base4Panel extends JPanel {
             calc.setOperation("");
         }
     }
-    class EnterListener implements ActionListener
+    class EqualListener implements ActionListener
     {
         @Override
         public void actionPerformed(ActionEvent e)
         {
             int value1 = Integer.parseInt(calc.getTotalValue(), 10);        // convert total and temp value to base 10
             int value2 = Integer.parseInt(calc.getTempValue(), 10);         
-            String sum = new String(Integer.toString(value1 + value2, calc.getBase()));   // add the two and convert back to orignal base as a string
-            calc.setTotalValue(sum);             // update current total
+            String sum = new String(Integer.toString((value1 + value2), calc.getBase()));   // add the two and convert back to orignal base as a string
+            calc.clearTotalValue();
+            calc.setTotalValue(sum);             // update current total  
+            calc.clearTempValue();
+            screen.setText(calc.getTotalValue());   // shows the current total
         }
     }
 	// you need to deal with event handling. before you go too crazy writing code, 

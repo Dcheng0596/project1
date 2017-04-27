@@ -22,11 +22,11 @@ public class Base4CalcState {
 
 	String getTempValue() { return tempValue; }
     
-    void setTempValue(String digit) { tempValue += digit; }
+    void setTempValue(String digit) { tempValue = tempValue.concat(digit); }
 
 	String getTotalValue() { return totalValue; }
 	
-	void setTotalValue(String digit) { totalValue += digit; }
+	void setTotalValue(String digit) { totalValue = totalValue.concat(digit); }
 	
 	void setBase(int radix) { base = radix; }
 	
