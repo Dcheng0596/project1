@@ -7,9 +7,9 @@ public class Base4CalcState {
 	
 	Base4CalcState()
 	{
-	    totalValue = new String("");
-	    tempValue = new String("");
-	    operation = new String("");
+	    totalValue = new String();
+	    tempValue = new String();
+	    operation = new String();
 	    base = 10;
 	}
 	void setOperation(String op) { operation = op; }

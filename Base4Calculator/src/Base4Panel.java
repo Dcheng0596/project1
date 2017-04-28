@@ -96,6 +96,7 @@ public class Base4Panel extends JPanel {
 		
 		screen.setEditable(false); 
 		screen.setHorizontalAlignment(SwingConstants.RIGHT); // right justify screen
+		screen.setText("0");    // displays 0 by default
 		base.setPreferredSize(new Dimension(250, 20)); // set slider size
 
 	}
@@ -105,15 +106,24 @@ public class Base4Panel extends JPanel {
         public void actionPerformed(ActionEvent e)
         {
             String buttonText = new String(((AbstractButton) e.getSource()).getText());  // gets button text
-            if(calc.getOperation() == "")       // appends buttonText to either total or temp depending if an operation has been pressed
+            if(calc.getOperation().isEmpty())       // appends buttonText to either total or temp depending if an operation has been pressed
             {
-                calc.setTotalValue(buttonText);     // appends the digit to total
-                screen.setText(calc.getTotalValue()); // prints to the screen the button text  
+                if(screen.getText().equals("0") && buttonText.equals("0")){}  // does not allow only 0 filled screen
+                else
+                {
+                    calc.setTotalValue(buttonText);     // appends the digit to total
+                    screen.setText(calc.getTotalValue()); // prints to the screen the button text  
+                }
             }
             else
             {
-                calc.setTempValue(buttonText);      // appends the digit to temp
-                screen.setText(calc.getTempValue()); // prints to the screen the button text  
+                if(screen.getText().equals("0") && buttonText.equals("0"))  // does not allow only 0 filled screen
+                    calc.clearTempValue();   
+                else
+                {
+                    calc.setTempValue(buttonText);      // appends the digit to temp
+                    screen.setText(calc.getTempValue()); // prints to the screen the button text  
+                }
             }              
         }
     }
@@ -131,7 +141,7 @@ public class Base4Panel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            screen.setText("");             // clear screen and set member variables to the empty string
+            screen.setText("0");             // clear screen and set member variables to the empty string
             calc.clearTempValue();
             calc.clearTotalValue();
             calc.setOperation("");
@@ -143,8 +153,16 @@ public class Base4Panel extends JPanel {
         public void actionPerformed(ActionEvent e)
         {
             int value1 = Integer.parseInt(calc.getTotalValue(), 10);        // convert total and temp value to base 10
-            int value2 = Integer.parseInt(calc.getTempValue(), 10);         
-            String sum = new String(Integer.toString((value1 + value2), calc.getBase()));   // add the two and convert back to orignal base as a string
+            int value2 = Integer.parseInt(calc.getTempValue(), 10);  
+            String sum = new String();      // contains new total
+            if(calc.getOperation().equals("+"))     // sets sum equal to the combined values converted to the desired base as a string
+                sum = new String(Integer.toString((value1 + value2), calc.getBase()));
+            if(calc.getOperation().equals("-"))
+                sum = new String(Integer.toString((value1 - value2), calc.getBase()));
+            if(calc.getOperation().equals("x"))
+                sum = new String(Integer.toString((value1 * value2), calc.getBase()));
+            if(calc.getOperation().equals("/"))
+                sum = new String(Integer.toString((value1 / value2), calc.getBase()));
             calc.clearTotalValue();
             calc.setTotalValue(sum);             // update current total  
             calc.clearTempValue();
