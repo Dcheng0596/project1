@@ -1,3 +1,4 @@
+import java.awt.BorderLayout;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.event.ActionEvent;
@@ -24,7 +25,7 @@ public class Base4Panel extends JPanel {
 	Base4Panel() {
 	    
 	    calc = new Base4CalcState();
-		this.setLayout(new FlowLayout()); 
+		this.setLayout(new BorderLayout()); 
 		zero = new JButton("0"); 
 		one = new JButton("1");
 		two = new JButton("2"); 
@@ -170,8 +171,8 @@ public class Base4Panel extends JPanel {
         {
             try
             {
-                long value1 = Long.parseLong(calc.getTotalValue(), calc.getBase());        // convert total and temp value to base 10
-                long value2 = Long.parseLong(calc.getTempValue(), calc.getBase()); 
+                Long.parseLong(calc.getTotalValue(), calc.getBase());        // convert total and temp value to base 10
+                Long.parseLong(calc.getTempValue(), calc.getBase()); 
             }
             catch(NumberFormatException ex)
             {
@@ -191,7 +192,9 @@ public class Base4Panel extends JPanel {
             calc.clearTotalValue();
             calc.setTotalValue(sum);             // update current total  
             calc.clearTempValue();
+            calc.setOperation("");
             screen.setText(calc.getTotalValue().toUpperCase());   // shows the current total and formats string to uppercase
+            
         }
     }
     class SliderListener implements ChangeListener
@@ -210,7 +213,7 @@ public class Base4Panel extends JPanel {
                 String string = new String(Long.toString(decimal, baseNum).toUpperCase());
                 screen.setText(string);
           
-                if(calc.getOperation().equals(""))
+                if(calc.getOperation().isEmpty())  // sets the screen and temp or total to the new base
                 { 
                     calc.clearTotalValue();
                     calc.setTotalValue(string);  
