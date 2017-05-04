@@ -1,4 +1,5 @@
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
@@ -12,6 +13,7 @@ import javax.swing.JPanel;
 import javax.swing.JSlider;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
+import javax.swing.UIManager;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 
@@ -114,8 +116,9 @@ public class Base4Panel extends JPanel {
 		add(grid);
 		
 		screen.setPreferredSize(new Dimension(20, 30));  // set dimensions
-		screen.setFont(screen.getFont().deriveFont(18f)); // increase font
+		screen.setFont(screen.getFont().deriveFont(20f)); // increase font
 		screen.setEditable(false); 
+		screen.setBackground(Color.WHITE); //set screen color to white
 		screen.setHorizontalAlignment(SwingConstants.RIGHT); // right justify screen
 		screen.setText("0");    // displays 0 by default
 		base.setPreferredSize(new Dimension(10, 50)); // set slider size
@@ -287,7 +290,4 @@ public class Base4Panel extends JPanel {
             }
         }
     }
-	// you need to deal with event handling. before you go too crazy writing code, 
-	// think about when the calc object needs to be involved, and when it doesn't 
-
 }
