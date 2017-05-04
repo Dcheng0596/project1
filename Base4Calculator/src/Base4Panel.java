@@ -268,10 +268,15 @@ public class Base4Panel extends JPanel {
         @Override
         public void actionPerformed(ActionEvent e)
         {
-            if(screen.getText().length() == 1)  // does not delete if theres only one digit
-                return;
             if(calc.getOperation().isEmpty())
             {
+                if(screen.getText().length() == 1)  // sets screen to 0 if theres only one digit
+                {
+                    calc.clearTotalValue();
+                    calc.setTotalValue("");
+                    screen.setText("0");
+                    return;
+                }
                 String string =new String(calc.getTotalValue());   // deletes last character and displays it on screen
                 StringBuilder sb = new StringBuilder(string);
                 sb.deleteCharAt(string.length() - 1);
@@ -281,6 +286,13 @@ public class Base4Panel extends JPanel {
             }
             else
             {
+                if(screen.getText().length() == 1)  // does not delete if theres only one digit
+                {
+                    calc.clearTempValue();
+                    calc.setTempValue("");
+                    screen.setText("");
+                    return;
+                }
                 String string = new String(calc.getTempValue());   // deletes last character and displays it on screen
                 StringBuilder sb = new StringBuilder(string);
                 sb.deleteCharAt(string.length() - 1);
