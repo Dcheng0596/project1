@@ -27,7 +27,7 @@ public class Base4Panel extends JPanel {
 	    calc = new Base4CalcState();
 		this.setLayout(new BorderLayout());
 		JPanel grid = new JPanel();
-		grid.setLayout(new GridLayout(0, 5)
+		grid.setLayout(new GridLayout(0, 5));
 		back = new JButton("<-");
 		zero = new JButton("0"); 
 		one = new JButton("1");
@@ -83,6 +83,7 @@ public class Base4Panel extends JPanel {
 		clear.addActionListener(new ClearListener());
 		equal.addActionListener(new EqualListener());
 		base.addChangeListener(new SliderListener());
+		back.addActionListener(new BackListener());
 		
 		add(screen, BorderLayout.NORTH);
 		add(base, BorderLayout.SOUTH);
@@ -130,26 +131,19 @@ public class Base4Panel extends JPanel {
         public void actionPerformed(ActionEvent e)
         {
             String buttonText = new String(((AbstractButton) e.getSource()).getText());  // gets button text
+            if(screen.getText().equals("0") && buttonText.equals("0"))  // checks if pressed zero while zero on screen
+                    return;
             if(calc.getOperation().isEmpty())       // appends buttonText to either total or temp depending if an operation has been pressed
             {
-                if(screen.getText().equals("0") && buttonText.equals("0")){}  // does not allow only 0 filled screen
-                else
-                {
-                    calc.setTotalValue(buttonText);     // appends the digit to total
-                    screen.setText(calc.getTotalValue()); // prints to the screen the button text  
-                }
+                calc.setTotalValue(buttonText);     // appends the digit to total
+                screen.setText(calc.getTotalValue()); // prints to the screen the button text  
             }
             else
             {
-                if(screen.getText().equals("0") && buttonText.equals("0"))  // does not allow only 0 filled screen
-                    calc.clearTempValue();   
-                else
-                {
                     calc.setTempValue(buttonText);      // appends the digit to temp
                     screen.setText(calc.getTempValue()); // prints to the screen the button text  
-                }
             }              
-        }
+        } 
     }
     class OperationListener implements ActionListener
     {
@@ -248,6 +242,8 @@ public class Base4Panel extends JPanel {
         {
             if(calc.getOperation().isEmpty())
             {
+                if(calc.getTotalValue().isEmpty()) // checks if theres something to make negative
+                    return;
                 String temp = new String("-" + calc.getTotalValue());   // turns string negative and displays it on screen
                 calc.clearTotalValue();
                 calc.setTotalValue(temp);
@@ -255,9 +251,38 @@ public class Base4Panel extends JPanel {
             }
             else
             {
+                if(calc.getTempValue().isEmpty())  // checks if theres something to make negative
+                    return;
                 String temp = new String("-" + calc.getTempValue());
                 calc.clearTempValue();
                 calc.setTempValue(temp);
+                screen.setText(calc.getTempValue());
+            }
+        }
+    }
+    class BackListener implements ActionListener
+    {
+        @Override
+        public void actionPerformed(ActionEvent e)
+        {
+            if(screen.getText().length() == 1)  // does not delete if theres only one digit
+                return;
+            if(calc.getOperation().isEmpty())
+            {
+                String string =new String(calc.getTotalValue());   // deletes last character and displays it on screen
+                StringBuilder sb = new StringBuilder(string);
+                sb.deleteCharAt(string.length() - 1);
+                calc.clearTotalValue();
+                calc.setTotalValue(sb.toString());
+                screen.setText(calc.getTotalValue());
+            }
+            else
+            {
+                String string = new String(calc.getTempValue());   // deletes last character and displays it on screen
+                StringBuilder sb = new StringBuilder(string);
+                sb.deleteCharAt(string.length() - 1);
+                calc.clearTempValue();
+                calc.setTempValue(sb.toString());
                 screen.setText(calc.getTempValue());
             }
         }
