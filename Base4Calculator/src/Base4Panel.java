@@ -1,6 +1,6 @@
 import java.awt.BorderLayout;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.GridLayout;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
@@ -18,14 +18,17 @@ import javax.swing.event.ChangeListener;
 public class Base4Panel extends JPanel {
     private Base4CalcState calc; // this object will actually do the calculating work
 	JButton zero, one, two, three, four, five, six, seven, eight, nine, A, B, C, D, E, F,  
-	plus, minus, multiply, divide, clear, equal, negative;
+	plus, minus, multiply, divide, clear, equal, negative, back;
     JTextField screen;
     JSlider base;
 	
 	Base4Panel() {
 	    
 	    calc = new Base4CalcState();
-		this.setLayout(new BorderLayout()); 
+		this.setLayout(new BorderLayout());
+		JPanel grid = new JPanel();
+		grid.setLayout(new GridLayout(0, 5)
+		back = new JButton("<-");
 		zero = new JButton("0"); 
 		one = new JButton("1");
 		two = new JButton("2"); 
@@ -46,7 +49,7 @@ public class Base4Panel extends JPanel {
 		minus = new JButton("-"); 
 		multiply = new JButton("x"); 
 		divide = new JButton("/"); 
-		clear = new JButton("Clear");
+		clear = new JButton("CE");
 		equal = new JButton("=");
 		negative = new JButton("(-)");
 		screen = new JTextField(24);
@@ -81,36 +84,40 @@ public class Base4Panel extends JPanel {
 		equal.addActionListener(new EqualListener());
 		base.addChangeListener(new SliderListener());
 		
-		add(screen);
-		add(base);
-		add(plus);
-		add(minus);
-		add(multiply);
-		add(divide);
-		add(F);
-		add(E);
-		add(D);
-		add(C);
-		add(B);
-		add(A);
-		add(nine);
-		add(eight);
-		add(seven);
-		add(six);
-		add(five);
-		add(four);
-		add(three);
-		add(two);
-		add(one);
-		add(zero);
-		add(clear); 
-		add(negative);
-		add(equal);
+		add(screen, BorderLayout.NORTH);
+		add(base, BorderLayout.SOUTH);
+		grid.add(plus);
+	    grid.add(minus);
+	    grid.add(multiply);
+	    grid.add(divide);
+	    grid.add(back);
+	    grid.add(seven);
+	    grid.add(eight);
+	    grid.add(nine);
+	    grid.add(A);
+		grid.add(B);
+		grid.add(four);
+		grid.add(five);
+		grid.add(six);
+		grid.add(C);
+		grid.add(D);
+		grid.add(one);
+		grid.add(two);
+		grid.add(three);
+	    grid.add(E);
+        grid.add(F);
+        grid.add(zero);
+		grid.add(negative);
+		grid.add(clear);
+		grid.add(equal);
+		add(grid);
 		
+		screen.setPreferredSize(new Dimension(20, 30));  // set dimensions
+		screen.setFont(screen.getFont().deriveFont(18f)); // increase font
 		screen.setEditable(false); 
 		screen.setHorizontalAlignment(SwingConstants.RIGHT); // right justify screen
 		screen.setText("0");    // displays 0 by default
-		base.setPreferredSize(new Dimension(250, 40)); // set slider size
+		base.setPreferredSize(new Dimension(10, 50)); // set slider size
 		base.setPaintTicks(true);
 		base.setMajorTickSpacing(1);
 		base.setPaintLabels(true);
